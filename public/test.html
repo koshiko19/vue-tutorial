@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>vue-tutorial</title>
+	<script src="https://unpkg.com/vue@next"></script>
+	<style>
+		p {
+			margin: 0 0 10px 0;
+		}
+		.contentWrap {
+			margin-top: 20px;
+		}
+		.demo {
+			border: 1px solid #eee;
+			border-radius: 2px;
+			padding: 20px 30px;
+			user-select: none;
+			overflow-x: auto;
+		}
+	</style>
+</head>
+<body>
+	<div id="counter">
+		<!-- {{counter}}の部分が対応するオブジェクトのcounterのプロパティの値に置き換えられる -->
+		Counter: {{ counter }}
+	</div>
+	<script>
+		const Counter = {
+			data() {
+				return {
+					counter: 0
+				}
+			},
+			mounted() {
+				setInterval(() => {
+					this.counter++
+				}, 1000)
+			}
+		}
+		Vue.createApp(Counter).mount('#counter')
+	</script>
+
+	<div id="bind-attribute" class="demo contentWrap">
+		<!-- v-bind属性はディレクティブと呼ばれる。データと描画を同期する仕組み、コンポーネントのプロパティを動的に設定できる -->
+		<span v-bind:title="message"> <!-- v-bindでspanタグのtitle属性にmessageで保存された値が入る -->
+			Hover your mouse over me for a few seconds to see my dynamically bound title!<br>
+			この要素の上にマウスを数秒置くと、ダイナミックにバインドされた私のタイトルが表示されます。
+		</span>
+	</div>
+	<script>
+		const AttributeBinding = {
+			data() {
+				return {
+					message: 'このページを読み込んだのは' + new Date().toLocaleString()
+				}
+			}
+		}
+		Vue.createApp(AttributeBinding).mount('#bind-attribute')
+	</script>
+
+	<div id="event-handling" class="contentWrap">
+		<p>{{ message }}</p>
+		<!-- v-onディレクティブを使うことでDOMイベントの呼び出し、イベント発火のためのJavaScriptの実行が可能になる -->
+		<button v-on:click="reverseMessage">Reverse Message</button>
+	</div>
+	<script>
+		const EventHandling = {
+			data() {
+				return {
+					message: 'Hello Vue.js!'
+				}
+			},
+			methods: {
+				reverseMessage() { //htmlでv-on:clickを指定しているのでclickのイベントをjsで書く必要がなくなる
+					this.message = this.message
+					.split('')
+					.reverse()
+					.join('')
+				}
+			}
+		}
+		Vue.createApp(EventHandling).mount('#event-handling')
+	</script>
+
+	<div id="two-way-binding" class="contentWrap">
+		<p>{{ message }}</p>
+		<!-- v-modelを使うことでvalueやinputなどを置き換えてくれる。フォーム作成時に活用される -->
+		<input v-model="message" />
+	</div>
+	<script>
+		const TwoWayBinding = {
+			data() {
+				return {
+					message: 'Hello Vue!'
+				}
+			}
+		}
+		Vue.createApp(TwoWayBinding).mount('#two-way-binding')
+	</script>
+
+	<div id="conditional-rendering" class="demo contentWrap">
+		<!-- v-if属性を使うことでif文の代わりとして機能する -->
+		<span v-if="seen">Now you see me</span>
+	</div>
+	<script>
+		const ConditionalRendering = {
+			data() {
+				return {
+					seen: true //falseにすることでv-if="seen"で指定している要素が存在しなくなる
+				}
+			}
+		}
+		Vue.createApp(ConditionalRendering).mount('#conditional-rendering')
+	</script>
+
+	<div id="list-rendering" class="demo contentWrap">
+		<ol>
+			<!-- v-fot属性を使うことでfor文の代わりとして機能する。todosの数だけtodo.textの描画を繰り返す -->
+			<li v-for="todo in todos">
+				{{ todo.text }}
+			</li>
+		</ol>
+	</div>
+	<script>
+		const ListRendering = {
+			data() {
+				return {
+					todos: [
+						{ text: 'Learn JavaScript' },
+						{ text: 'Learn Vue' },
+						{ text: 'Build something awesome' }
+					]
+				}
+			}
+		}
+		Vue.createApp(ListRendering).mount('#list-rendering')
+	</script>
+</body>
+</html>
