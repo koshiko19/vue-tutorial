@@ -138,5 +138,39 @@
 		}
 		Vue.createApp(ListRendering).mount('#list-rendering')
 	</script>
+
+	<div id="todo-list-app" class="demo contentWrap">
+		<ol>
+			<!-- todo-item コンポーネントのインスタンスを生成する -->
+			<!-- 各 todo-item にその内容を表す todo オブジェクトを指定することで、内容が動的に変化します。後述する "key" も各コンポーネントに指定する必要がある。-->
+			<todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id"></todo-item>
+		</ol>
+	</div>
+
+	<script>
+		const TodoList = {
+			data() {
+				return {
+					groceryList: [
+						{id: 0, text: 'Vegetables'},
+						{id: 1, text: 'Cheese'},
+						{id: 2, text: 'Whatever else humans are supposed to eat'}
+					]
+				}
+			}
+		}
+
+		// Vue アプリケーションを生成する
+		const app = Vue.createApp(TodoList)
+
+		// todo-item という名前の新しいコンポーネントを定義する
+		app.component('todo-item', {
+			props: ['todo'],
+			template: '<li>{{ todo.text }}</li>'
+		})
+
+		// Vue application をマウントする
+		app.mount('#todo-list-app')
+	</script>
 </body>
 </html>
